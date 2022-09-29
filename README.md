@@ -119,7 +119,7 @@ Stage-2 (Downstream Traning and Evaluation):
   
 | RSNA_Training_Set = 10%       | RSNA_Training_Set = 50%   |
 | ------------- |:-------------:| 
-| ImageNet + Validation = 20%      | ImageNet + Validation = 20% 
+| ImageNet + Validation = 20%      | ImageNet + Validation = 20% |
 | ImageNet + Validation = Only Boxes      |  ImageNet + Validation = Only Boxes  |   
 | SupCon + Validation = 20% | SupCon + Validation = 20%      |   
 | SupCon + Validation = Only Boxes      |  SupCon + Validation = Only Boxes      | 
