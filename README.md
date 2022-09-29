@@ -9,9 +9,10 @@ Self-supervised learning has emerged as a powerful technique to understand non-c
 ## Architecture
 
 ### Stage-1 : Pre-training 
-![Shot](/Stage-1.png)
+<img src = "https://github.com/kamranisg/pretrain_xrays/blob/main/Stage-1.png" height="250" width="600">
+
 ### Stage-2 : Downstream Training and Evaluation 
-![Shot](/Stage-2.png)
+<img src = "https://github.com/kamranisg/pretrain_xrays/blob/main/Stage-2.png" height="250" width="600">
 
 ## Setup
 
@@ -73,7 +74,62 @@ conda env create -f gr2.yaml
   --batch_size=64 
   --epochs=100 
   --learning_rate=1e-3
+  --backbone="ImageNet"
+  --train_folder=<path_to_datasets>/RSNA/CSV/train.csv
+  --val_folder=<path_to_datasets>/RSNA/CSV/validation.csv
   ```
+  
+  Additional Hyperparameters:
+  If you wish to use 
+  
+- Validation on Only Bounding Boxes 
+  
+  ``` terminal 
+  --val_folder=<path_to_datasets>/RSNA/CSV/dummy.csv
+  ``` 
+  
+- Backbone trained using Cross Entropy 
+  
+  First, pick the best model from visualizing the loss functions in tensorboard. 
+  
+  Try different learning rates, batch sizes, and choose the best epoch. Usually the last epoch works best with lowest validation loss
+  Go to `~/save/SupCon/mimic_cxr_model/<path-to-your-best-checkpoint>`
+  
+  Next, add the following command to the script (example)
+  ``` terminal 
+   --checkpoint="~/save/SupCon/mimic_cxr_model/SupCE_mimic_cxr_resnet50_lr_0.0005_decay_1e-06_bsz_64_trial_0/last.pth"
+   --backbone="SupCE"
+  ``` 
+  
+- Backbone trained using Supervised Contrastive loss
+  
+  Go to `~/save/SupCon/mimic_cxr_model/<path-to-your-best-checkpoint>`
+  
+  ``` terminal 
+  --checkpoint="~/save/SupCon/mimic_cxr_model/SupCon_mimic_cxr_resnet50_lr_3e-05_decay_1e-06_bsz_64_temp_0.07_trial_0/last.pth"
+  --backbone="SupCon"
+  ``` 
+  
+
+## Configurations
+
+Stage-1 (Pre_training) : We have used trained ResNet-50 on 20% training data of MIMIC_CXR
+
+Stage-2 (Downstream Traning and Evaluation): 
+  
+| RSNA_Training_Set = 10%       | RSNA_Training_Set = 50%   |
+| ------------- |:-------------:| 
+| ImageNet + Validation = 20%      | ImageNet + Validation = 20% 
+| ImageNet + Validation = Only Boxes      |  ImageNet + Validation = Only Boxes  |   
+| SupCon + Validation = 20% | SupCon + Validation = 20%      |   
+| SupCon + Validation = Only Boxes      |  SupCon + Validation = Only Boxes      | 
+| Cross_Entropy + Validation = 20%      | Cross_Entropy + Validation = 20%  |   
+| Cross_Entropy + Validation = Only_Boxes |    Cross_Entropy + Validation = Only_Boxes   |   
+  
+ 
 
 
 ## Results
+<img src = "https://github.com/kamranisg/pretrain_xrays/blob/main/10Per.png" height="350" width="600">
+<img src = "https://github.com/kamranisg/pretrain_xrays/blob/main/50per.png" height="350" width="600">
+
